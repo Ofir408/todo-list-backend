@@ -19,8 +19,6 @@ class TaskGetter:
             response.append(json.loads(json_data))
         if len(rows) == 0:
             return ""
-        # response.headers.add("Access-Control-Allow-Origin", "*")
-
         a = jsonify(response)
         a.headers.add("Access-Control-Allow-Origin", "*")
         return a

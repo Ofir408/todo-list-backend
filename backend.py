@@ -1,3 +1,4 @@
+import flask
 from flask import Flask, request, jsonify
 import threading
 
@@ -33,7 +34,7 @@ def add_task():
     return task_adder.add_task(task_name, task_description)
 
 
-@app.route('/api/deleteTask', methods=['DELETE'])
+@app.route('/api/deleteTask', methods=['POST'])
 def delete_task():
     id_to_delete = request.json['id']
     task_deleter = TaskDeleter()
@@ -41,12 +42,20 @@ def delete_task():
     return "The Task Was Deleted"
 
 
-@app.route('/api/deleteAll', methods=['DELETE'])
+@app.route('/api/deleteAll', methods=['POST'])
 def delete_tasks():
     tasks_deleter = TasksDeleter()
     tasks_deleter.delete_all()
     return "All The Tasks Were Deleted"
 
+
+@app.after_request
+def after_request(response):
+    header = response.headers
+    header['Access-Control-Allow-Origin'] = '*'
+    header['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    header['Access-Control-Allow-Methods'] = 'OPTIONS, HEAD, GET, POST, DELETE, PUT'
+    return response
 
 
 threading.Thread(target=app.run, kwargs={'host': '192.168.1.168', 'port': PORT}).start()
