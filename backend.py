@@ -58,7 +58,7 @@ def after_request(response):
     return response
 
 
-threading.Thread(target=app.run, kwargs={'host': '192.168.1.168', 'port': PORT}).start()
+threading.Thread(target=app.run, kwargs={'host': '0.0.0.0', 'port': PORT}).start()
 # creating the db
 table_creator = TableCreator()
 table_creator.create_table()
